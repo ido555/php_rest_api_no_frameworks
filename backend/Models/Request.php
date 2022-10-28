@@ -10,6 +10,11 @@ class Request
     public function __construct()
     {
         $this->verb = $_SERVER['REQUEST_METHOD'];
+        // urls this applies to: http://localhost:xxxx or http://localhost:xxxx/
+        if (!isset($_SERVER['PATH_INFO'])){
+            http_response_code(404);
+            exit();
+        }
         $this->url_elements = explode('/', $_SERVER['PATH_INFO']);
         $this->parseIncomingParams();
         // set json as the default format
@@ -55,8 +60,9 @@ class Request
                 $this->format = "html";
                 break;
             default:
-                //TODO return unsupported format exception
-                break;
+                http_response_code(415);
+                echo "Unsupported Content-Type: " . $content_type;
+                exit();
         }
         $this->parameters = $parameters;
     }

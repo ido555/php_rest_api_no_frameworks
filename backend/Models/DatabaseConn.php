@@ -17,10 +17,16 @@ class DatabaseConn
             $pass = $_ENV["dbPass"];
 
             $this->conn = new pdo($dsn, $user, $pass);
-
+//          make sure the PDO will throw an exception to alert of any problems
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (Exception $e) {
-            throw new Exception($e);
+        } catch (PDOException $e) {
+            throw new PDOException($e);
         }
     }
+    protected function isNumericException($n){
+        if (!is_numeric($n)){
+            throw new TypeError();
+        }
+    }
+
 }

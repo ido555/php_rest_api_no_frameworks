@@ -5,4 +5,7 @@ RewriteBase /
 # redirect all files/directories that aren't found the to router
 RewriteCond %{REQUEST_FILENAME}$1 !-f
 RewriteCond %{REQUEST_FILENAME}$1 !-d
-RewriteRule ^.*$  /php_rest_api_no_frameworks/backend/router.php/%{REQUEST_URI}$1 [L]
+#^.*$
+RewriteRule . router.php/%{REQUEST_URI}$1
+
+
