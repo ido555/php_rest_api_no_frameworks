@@ -1,6 +1,6 @@
 <?php
 
-require_once("../Config/DevEnv.php");
+require_once __ROOT__ . "Config/DevEnv.php";
 
 class DatabaseConn
 {

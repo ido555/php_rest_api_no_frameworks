@@ -1,7 +1,9 @@
 <?php
 
-require_once "../Objects/Car.php";
-require_once "../Other/isNumericExceptionCheck.php";
+//require_once "../Objects/Car.php";
+require_once __ROOT__ . "Objects\Car.php";
+require_once __ROOT__ . "Other/isNumericExceptionCheck.php";
+require_once __ROOT__ . "Models/DatabaseConn.php";
 
 class CarModel extends DatabaseConn
 {
@@ -103,5 +105,4 @@ class CarModel extends DatabaseConn
 
 
     }
-
 }

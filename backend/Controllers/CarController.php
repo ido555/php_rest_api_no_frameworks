@@ -1,6 +1,6 @@
 <?php
 
-require_once '../Models/CarModel.php';
+require_once __ROOT__ . 'Models/CarModel.php';
 
 class CarController
 {
