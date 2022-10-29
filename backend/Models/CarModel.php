@@ -4,6 +4,7 @@
 require_once __ROOT__ . "Objects\Car.php";
 require_once __ROOT__ . "Other/isNumericExceptionCheck.php";
 require_once __ROOT__ . "Models/DatabaseConn.php";
+require_once __ROOT__ . "Models/CarModel.php";
 
 class CarModel extends DatabaseConn
 {
@@ -26,7 +27,7 @@ class CarModel extends DatabaseConn
         if (!($car instanceof Car))
             throw new TypeError();
 
-        $stmt = $this->conn->prepare(`INSERT INTO cars (manufacturer, year, color) VALUES (?, ?, ?)`);
+        $stmt = $this->conn->prepare("INSERT INTO cars (manufacturer, year, color) VALUES (?, ?, ?)");
         return $stmt->execute([$car->getManufacturer(), $car->getYear(), $car->getColor()]);
     }
 
@@ -39,7 +40,7 @@ class CarModel extends DatabaseConn
     public function getCar(int $id): Car
     {
         isNumericExceptionCheck($id);
-        $stmt = $this->conn->prepare(`SELECT * FROM cars WHERE (id) VALUES (?)`);
+        $stmt = $this->conn->prepare("SELECT * FROM cars WHERE (id) VALUES (?)");
         $stmt->execute($id);
         $stmt->setFetchMode(PDO::FETCH_CLASS, 'Car');
         return $stmt->fetch();
@@ -52,9 +53,9 @@ class CarModel extends DatabaseConn
      */
     public function getAllCars()
     {
-        $stmt = $this->conn->prepare(`SELECT * FROM cars`);
+        $stmt = $this->conn->prepare("SELECT * FROM cars");
         $stmt->execute();
-        return $stmt->fetch();
+        return $stmt->fetchAll(PDO::FETCH_CLASS, "CarModel");
     }
 
     /**
@@ -67,7 +68,7 @@ class CarModel extends DatabaseConn
     {
         isNumericExceptionCheck($id);
 
-        $stmt = $this->conn->prepare(`UPDATE cars SET manufacturer=?, year=?, color=? WHERE id=?`);
+        $stmt = $this->conn->prepare("UPDATE cars SET manufacturer=?, year=?, color=? WHERE id=?");
         $car = $this->getCar($id);
         return $stmt->execute([$car->getManufacturer(), $car->getYear(), $car->getColor(), $id]);
     }
@@ -82,7 +83,7 @@ class CarModel extends DatabaseConn
     {
         isNumericExceptionCheck($id);
 
-        $stmt = $this->conn->prepare(`DELETE FROM cars WHERE (id) VALUES (?)`);
+        $stmt = $this->conn->prepare("DELETE FROM cars WHERE (id) VALUES (?)");
         return $stmt->execute($id);
     }
 
@@ -96,7 +97,7 @@ class CarModel extends DatabaseConn
     {
         isNumericExceptionCheck($id);
 
-        $stmt = $this->conn->prepare(`SELECT * FROM cars WHERE id = ?`);
+        $stmt = $this->conn->prepare("SELECT * FROM cars WHERE id = ?");
         $stmt->execute($id);
         if ($stmt->rowCount() > 0)
             return true;

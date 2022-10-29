@@ -9,9 +9,10 @@ class Request
 
     public function __construct()
     {
+
         $this->verb = $_SERVER['REQUEST_METHOD'];
         // urls this applies to: http://localhost:xxxx or http://localhost:xxxx/
-        if (!isset($_SERVER['PATH_INFO'])){
+        if (!isset($_SERVER['PATH_INFO'])) {
             http_response_code(404);
             exit();
         }
@@ -42,15 +43,6 @@ class Request
         }
 
         switch ($content_type) {
-            case "application/json":
-                $body_params = json_decode($body);
-                if ($body_params) {
-                    foreach ($body_params as $param_name => $param_value) {
-                        $parameters[$param_name] = $param_value;
-                    }
-                }
-                $this->format = "json";
-                break;
             case "application/x-www-form-urlencoded":
                 parse_str($body, $postvars);
                 foreach ($postvars as $field => $value) {
@@ -58,6 +50,15 @@ class Request
 
                 }
                 $this->format = "html";
+                break;
+                // accept form-data && multipart/form-data etc etc...
+            case preg_match("/{form-data}/i", $content_type):
+                if ($_POST) {
+                    foreach ($_POST as $param_name => $param_value) {
+                        $parameters[$param_name] = $param_value;
+                    }
+                }
+                $this->format = "json";
                 break;
             default:
                 break;

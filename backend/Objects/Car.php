@@ -3,6 +3,7 @@
 
 class Car
 {
+    private int $id = -1;
     private string $manufacturer;
     private int $year;
     private string $color;
@@ -72,6 +73,22 @@ class Car
     public function setColor(string $color): void
     {
         $this->color = $color;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
+    {
+        $this->id = $id;
     }
 
 
