@@ -60,9 +60,10 @@ class Request
                 $this->format = "html";
                 break;
             default:
-                http_response_code(415);
-                echo "Unsupported Content-Type: " . $content_type;
-                exit();
+                break;
+//                http_response_code(415);
+//                echo "Unsupported Content-Type: " . $content_type;
+//                exit();
         }
         $this->parameters = $parameters;
     }

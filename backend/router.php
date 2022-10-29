@@ -1,22 +1,26 @@
 <?php
+require realpath($_SERVER["DOCUMENT_ROOT"] .'/Models/CarModel.php');
+
+
 require_once 'Config/DevEnv.php';
 require_once 'Models/Request.php';
+//require_once 'Models/CarModel.php';
+//require_once(realpath($_SERVER["DOCUMENT_ROOT"]) .'/mysite/php/includes/dbconn.inc');
 
+exit();
 header('Content-Type: application/json; charset=utf-8'); // for debugging
-
-// autoload classes
-spl_autoload_register('autoload');
-function autoload($classname)
-{
-    if (preg_match('/[a-zA-Z]+Controller$/', $classname)) {
-        include __DIR__ . '/Controllers/' . $classname . '.php';
-        return true;
-    } elseif (preg_match('/[a-zA-Z]+Model$/', $classname)) {
-        include __DIR__ . '/Models/' . $classname . '.php';
-        return true;
-    }
-}
-
+// autoload controllers and models
+//spl_autoload_register('autoload');
+//function autoload($classname)
+//{
+//    if (preg_match('/[a-zA-Z]+Controller$/', $classname)) {
+//        include __DIR__ . '/Controllers/' . $classname . '.php';
+//        return true;
+//    } elseif (preg_match('/[a-zA-Z]+Model$/', $classname)) {
+//        include __DIR__ . '/Models/' . $classname . '.php';
+//        return true;
+//    }
+//}
 try {
     $request = new Request();
 
@@ -24,7 +28,10 @@ try {
     $controller_name = ucfirst($request->url_elements[1]);
     if (class_exists($controller_name)) {
         $controller = new $controller_name();
-        $action_name = strtolower($request->verb);
+        if (isset($request->url_elements[2])) {
+            $action = $request->url_elements[2];
+            echo 'action: ' . $action . "\n\n";
+        }
         var_dump($controller);
     } else {
         http_response_code(404);

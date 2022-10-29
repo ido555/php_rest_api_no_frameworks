@@ -1,6 +1,7 @@
 <?php
 
 require_once "../Objects/Car.php";
+require_once "../Other/isNumericExceptionCheck.php";
 
 class CarModel extends DatabaseConn
 {
@@ -31,11 +32,11 @@ class CarModel extends DatabaseConn
      * @param int $id
      * @return Car
      * @throws PDOException
+     * @throws TypeError
      */
     public function getCar(int $id): Car
     {
-        $this->isNumericException();
-
+        isNumericExceptionCheck($id);
         $stmt = $this->conn->prepare(`SELECT * FROM cars WHERE (id) VALUES (?)`);
         $stmt->execute($id);
         $stmt->setFetchMode(PDO::FETCH_CLASS, 'Car');
@@ -58,10 +59,11 @@ class CarModel extends DatabaseConn
      * @param int $id
      * @return bool
      * @throws PDOException
+     * @throws TypeError
      */
     public function updateCar(int $id)
     {
-        $this->isNumericException($id);
+        isNumericExceptionCheck($id);
 
         $stmt = $this->conn->prepare(`UPDATE cars SET manufacturer=?, year=?, color=? WHERE id=?`);
         $car = $this->getCar($id);
@@ -72,18 +74,25 @@ class CarModel extends DatabaseConn
      * @param int $id
      * @return bool
      * @throws PDOException
+     * @throws TypeError
      */
     public function deleteCar(int $id)
     {
-        $this->isNumericException($id);
+        isNumericExceptionCheck($id);
 
         $stmt = $this->conn->prepare(`DELETE FROM cars WHERE (id) VALUES (?)`);
         return $stmt->execute($id);
     }
 
+    /***
+     * @param int $id
+     * @return bool
+     * @throws PDOException
+     * @throws TypeError
+     */
     public function isCarExists(int $id)
     {
-        $this->isNumericException($id);
+        isNumericExceptionCheck($id);
 
         $stmt = $this->conn->prepare(`SELECT * FROM cars WHERE id = ?`);
         $stmt->execute($id);

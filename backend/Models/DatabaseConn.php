@@ -23,10 +23,5 @@ class DatabaseConn
             throw new PDOException($e);
         }
     }
-    protected function isNumericException($n){
-        if (!is_numeric($n)){
-            throw new TypeError();
-        }
-    }
 
 }
